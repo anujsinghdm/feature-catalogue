@@ -47,6 +47,12 @@ ml:hasNonModelFeature
   rdfs:range <http://geophy.io/ontologies/fcat#Feature> ;
   rdfs:subPropertyOf ml:hasInputFeature ;
 .
+ml:imputationLogicDetail
+  a owl:ObjectProperty ;
+  rdfs:comment "Links a model to a resource that provides the detail of the imputations performed on the input features of the model."@en ;
+  rdfs:domain ml:Model ;
+  rdfs:label "imputationLogicDetail"@en ;
+.
 <http://purl.org/dc/terms/description>
   rdfs:domain ml:Model ;
 .

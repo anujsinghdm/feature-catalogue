@@ -23,14 +23,20 @@ fcat:Catalog
 .
 fcat:Expression
   a owl:Class ;
-  rdfs:comment "fcat:Expression is n extendable class that can have different types of expression to retrieve and calculation the feature data on the fly." ;
-  rdfs:label "Expression" ;
+  rdfs:comment "fcat:Expression is n extendable class that can have different types of expression to retrieve and calculation the feature data on the fly."@en ;
+  rdfs:label "Expression"@en ;
   rdfs:subClassOf owl:Thing ;
 .
 fcat:Feature
   a owl:Class ;
   rdfs:comment "dcat:Feature represents a feature used in a machine learning models. The class is used to capture the metadata about the features." ;
   rdfs:label "Feature" ;
+  rdfs:subClassOf owl:Thing ;
+.
+fcat:FeatureStatus
+  a owl:Class ;
+  rdfs:comment "dcat:FeatureStatus represents the status of a feature, if it is in exploration; in production, or deprecated."@en ;
+  rdfs:label "FeatureStatus"@en ;
   rdfs:subClassOf owl:Thing ;
 .
 fcat:QueryExpression
@@ -173,6 +179,14 @@ fcat:hasStandardDeviation
   rdfs:range xsd:decimal ;
   rdfs:subPropertyOf fcat:statisticalData ;
 .
+fcat:hasStatus
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasStatus is an object property that connects fcat:Feature and its status which is part of controlled vocaubulary fcat:FeatureStatus."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasStatus"@en ;
+  rdfs:range fcat:FeatureStatus ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
 fcat:hasTargetFeature
   a owl:ObjectProperty ;
   rdfs:comment "fcat:hasTargetFeature is an object property that connects a fcat:Relationship instance with its target Feature"@en ;
@@ -180,6 +194,16 @@ fcat:hasTargetFeature
   rdfs:label "hasTargetFeature"@en ;
   rdfs:range fcat:Feature ;
   rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:inExploration
+  a fcat:FeatureStatus ;
+  rdfs:comment "It indicates that a feature is in exploration." ;
+  rdfs:label "inExploration" ;
+.
+fcat:inProduction
+  a fcat:FeatureStatus ;
+  rdfs:comment "It indicates that a feature is in production." ;
+  rdfs:label "inProduction" ;
 .
 fcat:percentileData
   a owl:DatatypeProperty ;
