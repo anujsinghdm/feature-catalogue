@@ -1,0 +1,55 @@
+# baseURI: http://geophy.io/ontologies/ml
+# imports: http://geophy.io/ontologies/fcat
+# imports: http://purl.org/dc/elements/1.1/
+# imports: http://purl.org/dc/terms/
+# prefix: ml
+
+@prefix : <http://geophy.io/ontologies/ml#> .
+@prefix ml: <http://geophy.io/ontologies/ml#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://geophy.io/ontologies/ml>
+  a owl:Ontology ;
+  owl:imports <http://geophy.io/ontologies/fcat> ;
+  owl:imports <http://purl.org/dc/elements/1.1/> ;
+  owl:imports <http://purl.org/dc/terms/> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+ml:Model
+  a owl:Class ;
+  rdfs:comment "ml:model represents a machine learning model instance. It is used to captures the metadata around an ML model." ;
+  rdfs:label "Model" ;
+.
+ml:hasInputFeature
+  a owl:ObjectProperty ;
+  rdfs:comment "ml:hasFeature is superclass of the different types of features used in an ML model." ;
+  rdfs:domain ml:Model ;
+  rdfs:label "hasInputFeature" ;
+  rdfs:range <http://geophy.io/ontologies/fcat#Feature> ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+ml:hasModelFeature
+  a owl:ObjectProperty ;
+  rdfs:comment "ml:hasModelFeature is an object property that connects a machine learning model instance with a feature that is used as a model feature in the ML model." ;
+  rdfs:domain ml:Model ;
+  rdfs:label "hasModelFeature" ;
+  rdfs:range <http://geophy.io/ontologies/fcat#Feature> ;
+  rdfs:subPropertyOf ml:hasInputFeature ;
+.
+ml:hasNonModelFeature
+  a owl:ObjectProperty ;
+  rdfs:comment "ml:hasNonModelFeature is an object property that connects a machine learning model instance with a feature that is used only as an imputation feature in the ML model." ;
+  rdfs:domain ml:Model ;
+  rdfs:label "hasNonModelFeature" ;
+  rdfs:range <http://geophy.io/ontologies/fcat#Feature> ;
+  rdfs:subPropertyOf ml:hasInputFeature ;
+.
+<http://purl.org/dc/terms/description>
+  rdfs:domain ml:Model ;
+.
+<http://purl.org/dc/terms/hasVersion>
+  rdfs:domain ml:Model ;
+.

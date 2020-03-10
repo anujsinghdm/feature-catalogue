@@ -1,0 +1,2711 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Ontospy > http://geophy.io/ontologies/fcat</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+
+  <style type="text/css" media="screen">
+
+
+  body {
+	  margin-left: 6em;
+	  margin-right: 12em;
+	  text-align: justify;
+    padding: 2em 1em 2em 70px;
+    margin: 0;
+    font-family: sans-serif;
+    color: black;
+    background: white;
+    background-position: top left;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  :link { color: #00C; background: transparent }
+  :visited { color: #00C; background: transparent }
+  a:active { color: #C00; background: transparent }
+
+  a:link img, a:visited img { border-style: none } /* no border on img links */
+
+  a:hover {color: white; background: #00C; }
+  a.backlink:hover {color: white; background: grey; }
+  a.greylink:hover {color: white; background: grey; }
+
+  .margintop {
+  	 margin-top: 40px;
+  }
+
+
+  dt, dd { margin-top: 10px; margin-bottom: 0 } /* opera 3.50 */
+  dt { font-weight: bold }
+
+
+  h1, h2, h3, h4, h5, h6 { text-align: left }
+  /* background should be transparent, but WebTV has a bug */
+  h1, h2, h3, h4, h5 { color: #005A9C; background: white }
+  h1.title { font: 200% sans-serif }
+  h1 { font: 170% sans-serif }
+  h2 { font: 140% sans-serif }
+  h3 { font: 120% sans-serif }
+  h4 { font: bold 100% sans-serif }
+  h5 { font: italic 100% sans-serif }
+  h6 { font: small-caps 100% sans-serif }
+
+  .hide { display: none }
+
+
+  pre { margin-left: 2em }
+
+  pre, code { font-family: monospace } /* navigator 4 requires this */
+
+
+  .implementation {
+  	background: aliceblue;
+	padding: 10px;
+	margin-top: 5px;
+  }
+
+  fieldset {
+	  margin-top: 20px;
+	  padding: 13px;
+      text-align: left;
+  }
+
+  legend {
+	  text-transform: uppercase;
+  }
+
+  .entity-div {
+	  margin: 55px 10px 30px 10px;
+  }
+
+  .entity-section {
+	  margin-bottom: 0px;
+  }
+
+
+  a.backlink {
+	  font-size: 80%;
+	  color: grey;
+  }
+
+  a.greylink {
+	  color: grey;
+  }
+
+
+   .implementation_title {
+
+       font-weight: bold;
+       font-size: 100%;
+   }
+
+.section-desc {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+
+
+        .tree-container {
+            width: 3000em;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+		.tree {margin: 10px 0px 30px -20px; padding: 0; display: inline-block;}
+
+		.tree ul {
+			padding-top: 20px; position: relative;
+
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			-moz-transition: all 0.5s;
+		}
+
+		.tree li {
+			float: left; text-align: center;
+			list-style-type: none;
+			position: relative;
+			padding: 20px 5px 0 5px;
+
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			-moz-transition: all 0.5s;
+		}
+
+		/*We will use ::before and ::after to draw the connectors*/
+
+		.tree li::before, .tree li::after{
+			content: '';
+			position: absolute; top: 0; right: 50%;
+			border-top: 1px solid #ccc;
+			width: 50%; height: 20px;
+		}
+		.tree li::after{
+			right: auto; left: 50%;
+			border-left: 1px solid #ccc;
+		}
+
+		/*We need to remove left-right connectors from elements without
+		any siblings*/
+		.tree li:only-child::after, .tree li:only-child::before {
+			display: none;
+		}
+
+		/*Remove space from the top of single children*/
+		.tree li:only-child{ padding-top: 0;}
+
+		/*Remove left connector from first child and
+		right connector from last child*/
+		.tree li:first-child::before, .tree li:last-child::after{
+			border: 0 none;
+		}
+		/*Adding back the vertical connector to the last nodes*/
+		.tree li:last-child::before{
+			border-right: 1px solid #ccc;
+			border-radius: 0 5px 0 0;
+			-webkit-border-radius: 0 5px 0 0;
+			-moz-border-radius: 0 5px 0 0;
+		}
+		.tree li:first-child::after{
+			border-radius: 5px 0 0 0;
+			-webkit-border-radius: 5px 0 0 0;
+			-moz-border-radius: 5px 0 0 0;
+		}
+
+		/*Time to add downward connectors from parents*/
+		.tree ul ul::before{
+			content: '';
+			position: absolute; top: 0; left: 50%;
+			border-left: 1px solid #ccc;
+			width: 0; height: 20px;
+		}
+
+		.tree li a{
+			border: 1px solid #ccc;
+			padding: 5px 10px;
+			text-decoration: none;
+			color: #666;
+			font-family: arial, verdana, tahoma;
+			font-size: 11px;
+			display: inline-block;
+
+			border-radius: 5px;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+
+			transition: all 0.5s;
+			-webkit-transition: all 0.5s;
+			-moz-transition: all 0.5s;
+		}
+
+		/*Time for some hover effects*/
+		/*We will apply the hover effect the the lineage of the element also*/
+		.tree li a:hover, .tree li a:hover+ul li a {
+			background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
+		}
+		/*Connector styles on hover*/
+		.tree li a:hover+ul li::after,
+		.tree li a:hover+ul li::before,
+		.tree li a:hover+ul::before,
+		.tree li a:hover+ul ul::before{
+			border-color:  #94a0b4;
+		}
+
+		/*Thats all. I hope you enjoyed it.
+		Thanks :)*/
+
+
+  </style>
+
+
+</head>
+
+
+<body>
+
+
+    
+	<h1 class="title">Graph:&nbsp;<a href="" target="_blank">http://geophy.io/ontologies/fcat</a></h1>
+	<h3></h3>
+
+	<p><small>Ontology documentation automatically generated by <a class="greylink" href="http://lambdamusic.github.io/Ontospy/">Ontospy</a> on 10th March 2020 21:22</small></p>
+
+
+
+	
+
+
+	<hr class="margintop">
+
+	<h1><a name="toc">&nbsp;</a>Table of Content</h1>
+
+	<ul>
+		
+		<li><a href="#a-z">A-Z of Terms</a></li>
+		<li><a href="#classes">Classes</a></li>
+		<li><a href="#objproperties">Object Properties</a></li>
+		<li><a href="#dataproperties">Datatype properties</a></li>
+		
+		
+
+		
+
+	</ul>
+
+
+
+
+	
+
+	
+
+
+
+
+	
+
+	<hr class="margintop">
+	<h1><a  name="a-z">&nbsp;</a>A-Z of terms</h1>
+
+	<div id="azterms">
+
+	This is a complete alphabetical A-Z index of all terms, by main logical type.
+
+	
+		<fieldset> <legend>Classes (12)</legend>
+			<span><a href="#dcat:Catalog">dcat:Catalog</a></span>
+			|
+			<span><a href="#fcat:Catalog">fcat:Catalog</a></span>
+			|
+			<span><a href="#fcat:Expression">fcat:Expression</a></span>
+			|
+			<span><a href="#fcat:Feature">fcat:Feature</a></span>
+			|
+			<span><a href="#fcat:QueryExpression">fcat:QueryExpression</a></span>
+			|
+			<span><a href="#fcat:QueryType">fcat:QueryType</a></span>
+			|
+			<span><a href="#fcat:Relationship">fcat:Relationship</a></span>
+			|
+			<span><a href="#fcat:RelationshipType">fcat:RelationshipType</a></span>
+			|
+			<span><a href="#glossary:Term">glossary:Term</a></span>
+			|
+			<span><a href="#glossary:TermCategory">glossary:TermCategory</a></span>
+			|
+			<span><a href="#glossary:TermSubcategory">glossary:TermSubcategory</a></span>
+			|
+			<span><a href="#ml:Model">ml:Model</a></span>
+			
+			
+		</fieldset>
+	
+
+	
+
+	<fieldset> <legend>Object Properties (13)</legend>
+		&nbsp;<a href="#fcat:hasDefinition">fcat:hasDefinition</a>
+		|  <a href="#fcat:hasExpression">fcat:hasExpression</a>
+		|  <a href="#fcat:hasFeature">fcat:hasFeature</a>
+		|  <a href="#fcat:hasPreviousVersion">fcat:hasPreviousVersion</a>
+		|  <a href="#fcat:hasQuerytype">fcat:hasQuerytype</a>
+		|  <a href="#fcat:hasRelationshipType">fcat:hasRelationshipType</a>
+		|  <a href="#fcat:hasSourceFeature">fcat:hasSourceFeature</a>
+		|  <a href="#fcat:hasTargetFeature">fcat:hasTargetFeature</a>
+		|  <a href="#glossary:hasCategory">glossary:hasCategory</a>
+		|  <a href="#glossary:hasSubcategory">glossary:hasSubcategory</a>
+		|  <a href="#ml:hasInputFeature">ml:hasInputFeature</a>
+		|  <a href="#ml:hasModelFeature">ml:hasModelFeature</a>
+		|  <a href="#ml:hasNonModelFeature">ml:hasNonModelFeature</a>
+		  
+	</fieldset>
+
+	
+
+	
+	<fieldset> <legend>Datatype Properties (13)</legend>
+		&nbsp;<a href="#fcat:hasCount">fcat:hasCount</a>
+		|  <a href="#fcat:hasDatatype">fcat:hasDatatype</a>
+		|  <a href="#fcat:hasMax">fcat:hasMax</a>
+		|  <a href="#fcat:hasMean">fcat:hasMean</a>
+		|  <a href="#fcat:hasMin">fcat:hasMin</a>
+		|  <a href="#fcat:hasRelationshipScore">fcat:hasRelationshipScore</a>
+		|  <a href="#fcat:hasStandardDeviation">fcat:hasStandardDeviation</a>
+		|  <a href="#fcat:percentileData">fcat:percentileData</a>
+		|  <a href="#fcat:queryText">fcat:queryText</a>
+		|  <a href="#fcat:statisticalData">fcat:statisticalData</a>
+		|  <a href="#fcat:validFrom">fcat:validFrom</a>
+		|  <a href="#fcat:validTo">fcat:validTo</a>
+		|  <a href="#glossary:rationale">glossary:rationale</a>
+		  
+	</fieldset>
+	
+
+	
+
+	
+
+
+	</div>
+
+
+
+	
+
+
+	
+
+		<hr class="margintop">
+		<h1 class="margintop" ><a name="classes">&nbsp;</a>Classes</h1>
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="dcat:Catalog" href="#dcat:Catalog">dcat:Catalog</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">dcat:Catalog</a>
+
+                              
+                                  <ul>
+                                    <li><a href="#fcat:Catalog">fcat:Catalog</a></li>
+                                  </ul>
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>None</p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="fcat:Catalog" href="#fcat:Catalog">fcat:Catalog</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+                            <li> <a href="#dcat:Catalog">dcat:Catalog</a>
+
+                            <ul>
+
+                              <li><a style="font-weight: bold;">fcat:Catalog</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                            
+
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:Catalog is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    dcat:Catalog is a collection of metadata about features used in the machine learning models.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#dcat:Catalog">dcat:Catalog</a>  
+                    </p>
+				
+
+
+
+				
+					<p class="section-desc"><b>Property Domain of:</b>
+                        <br>
+                        <a href="#fcat:hasFeature">fcat:hasFeature</a>  
+                    </p>
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:Catalog a owl:Class ;<br />    rdfs:label &quot;Catalog&quot;@en ;<br />    rdfs:comment &quot;dcat:Catalog is a collection of metadata about features used in the machine learning models.&quot;@en ;<br />    rdfs:subClassOf dcat:Catalog .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="fcat:Expression" href="#fcat:Expression">fcat:Expression</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">fcat:Expression</a>
+
+                              
+                                  <ul>
+                                    <li><a href="#fcat:QueryExpression">fcat:QueryExpression</a></li>
+                                  </ul>
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:Expression is n extendable class that can have different types of expression to retrieve and calculation the feature data on the fly.
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+
+				
+					<p class="section-desc"><b>Property Range of:</b>
+                        <br>
+                        <a href="#fcat:hasExpression">fcat:hasExpression</a>  
+                    </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:Expression a owl:Class ;<br />    rdfs:label &quot;Expression&quot; ;<br />    rdfs:comment &quot;fcat:Expression is n extendable class that can have different types of expression to retrieve and calculation the feature data on the fly.&quot; ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="fcat:Feature" href="#fcat:Feature">fcat:Feature</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">fcat:Feature</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:Feature is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    dcat:Feature represents a feature used in a machine learning models. The class is used to capture the metadata about the features.
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+					<p class="section-desc"><b>Property Domain of:</b>
+                        <br>
+                        <a href="#dct:creator">dct:creator</a> | <a href="#dct:hasVersion">dct:hasVersion</a> | <a href="#dct:source">dct:source</a> | <a href="#fcat:hasCount">fcat:hasCount</a> | <a href="#fcat:hasDatatype">fcat:hasDatatype</a> | <a href="#fcat:hasMax">fcat:hasMax</a> | <a href="#fcat:hasMean">fcat:hasMean</a> | <a href="#fcat:hasMin">fcat:hasMin</a> | <a href="#fcat:hasStandardDeviation">fcat:hasStandardDeviation</a> | <a href="#fcat:percentileData">fcat:percentileData</a> | <a href="#fcat:statisticalData">fcat:statisticalData</a> | <a href="#fcat:validFrom">fcat:validFrom</a> | <a href="#fcat:validTo">fcat:validTo</a> | <a href="#fcat:hasDefinition">fcat:hasDefinition</a> | <a href="#fcat:hasExpression">fcat:hasExpression</a> | <a href="#fcat:hasPreviousVersion">fcat:hasPreviousVersion</a>  
+                    </p>
+				
+
+				
+					<p class="section-desc"><b>Property Range of:</b>
+                        <br>
+                        <a href="#fcat:hasFeature">fcat:hasFeature</a> | <a href="#fcat:hasPreviousVersion">fcat:hasPreviousVersion</a> | <a href="#fcat:hasSourceFeature">fcat:hasSourceFeature</a> | <a href="#fcat:hasTargetFeature">fcat:hasTargetFeature</a> | <a href="#ml:hasInputFeature">ml:hasInputFeature</a> | <a href="#ml:hasModelFeature">ml:hasModelFeature</a> | <a href="#ml:hasNonModelFeature">ml:hasNonModelFeature</a>  
+                    </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:Feature a owl:Class ;<br />    rdfs:label &quot;Feature&quot; ;<br />    rdfs:comment &quot;dcat:Feature represents a feature used in a machine learning models. The class is used to capture the metadata about the features.&quot; ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="fcat:QueryExpression" href="#fcat:QueryExpression">fcat:QueryExpression</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+                            <li> <a href="#fcat:Expression">fcat:Expression</a>
+
+                            <ul>
+
+                              <li><a style="font-weight: bold;">fcat:QueryExpression</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                            
+
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:QueryExpression is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:QueryExpression is used to capture the expression in query format.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#fcat:Expression">fcat:Expression</a>  
+                    </p>
+				
+
+
+
+				
+					<p class="section-desc"><b>Property Domain of:</b>
+                        <br>
+                        <a href="#fcat:queryText">fcat:queryText</a> | <a href="#fcat:hasQuerytype">fcat:hasQuerytype</a>  
+                    </p>
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:QueryExpression a owl:Class ;<br />    rdfs:label &quot;QueryExpression&quot; ;<br />    rdfs:comment &quot;fcat:QueryExpression is used to capture the expression in query format.&quot; ;<br />    rdfs:subClassOf fcat:Expression .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="fcat:QueryType" href="#fcat:QueryType">fcat:QueryType</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">fcat:QueryType</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:QueryType is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    dcat:QueryType is a controlled vocabulary for types of query supported by feature serving API(s).
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+
+				
+					<p class="section-desc"><b>Property Range of:</b>
+                        <br>
+                        <a href="#fcat:hasQuerytype">fcat:hasQuerytype</a>  
+                    </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:QueryType a owl:Class ;<br />    rdfs:label &quot;QueryType&quot;@en ;<br />    rdfs:comment &quot;dcat:QueryType is a controlled vocabulary for types of query supported by feature serving API(s).&quot;@en ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="fcat:Relationship" href="#fcat:Relationship">fcat:Relationship</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">fcat:Relationship</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:Relationship is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:relationship is class that captures the information of features that are related to each other, the type of relationship and score of the relationship (if applicable).
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+					<p class="section-desc"><b>Property Domain of:</b>
+                        <br>
+                        <a href="#fcat:hasRelationshipScore">fcat:hasRelationshipScore</a> | <a href="#fcat:hasRelationshipType">fcat:hasRelationshipType</a> | <a href="#fcat:hasSourceFeature">fcat:hasSourceFeature</a> | <a href="#fcat:hasTargetFeature">fcat:hasTargetFeature</a>  
+                    </p>
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:Relationship a owl:Class ;<br />    rdfs:label &quot;Relationship&quot;@en ;<br />    rdfs:comment &quot;fcat:relationship is class that captures the information of features that are related to each other, the type of relationship and score of the relationship (if applicable).&quot;@en ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="fcat:RelationshipType" href="#fcat:RelationshipType">fcat:RelationshipType</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">fcat:RelationshipType</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:RelationshipType is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:RelationshipType is class that is a controlled vocabulary of relationship that two features can have.
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+
+				
+					<p class="section-desc"><b>Property Range of:</b>
+                        <br>
+                        <a href="#fcat:hasRelationshipType">fcat:hasRelationshipType</a>  
+                    </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:RelationshipType a owl:Class ;<br />    rdfs:label &quot;RelationshipType&quot;@en ;<br />    rdfs:comment &quot;fcat:RelationshipType is class that is a controlled vocabulary of relationship that two features can have.&quot;@en ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="glossary:Term" href="#glossary:Term">glossary:Term</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">glossary:Term</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> glossary:Term is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    glossary:Term is used to capture the formal definition and explanation related to a term. These terms are often classfiied using a specific category and subcategory.
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+					<p class="section-desc"><b>Property Domain of:</b>
+                        <br>
+                        <a href="#glossary:rationale">glossary:rationale</a> | <a href="#glossary:hasCategory">glossary:hasCategory</a> | <a href="#glossary:hasSubcategory">glossary:hasSubcategory</a>  
+                    </p>
+				
+
+				
+					<p class="section-desc"><b>Property Range of:</b>
+                        <br>
+                        <a href="#fcat:hasDefinition">fcat:hasDefinition</a>  
+                    </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>glossary:Term a owl:Class ;<br />    rdfs:label &quot;Term&quot; ;<br />    rdfs:comment &quot;glossary:Term is used to capture the formal definition and explanation related to a term. These terms are often classfiied using a specific category and subcategory.&quot; ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="glossary:TermCategory" href="#glossary:TermCategory">glossary:TermCategory</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">glossary:TermCategory</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> glossary:TermCategory is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    glossary:termCategory is a controlled vocabulary that lists the expected catogories for the defined terms.
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+
+				
+					<p class="section-desc"><b>Property Range of:</b>
+                        <br>
+                        <a href="#glossary:hasCategory">glossary:hasCategory</a>  
+                    </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>glossary:TermCategory a owl:Class ;<br />    rdfs:label &quot;Term&quot; ;<br />    rdfs:comment &quot;glossary:termCategory is a controlled vocabulary that lists the expected catogories for the defined terms.&quot; ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="glossary:TermSubcategory" href="#glossary:TermSubcategory">glossary:TermSubcategory</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">glossary:TermSubcategory</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> glossary:TermSubcategory is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    glossary:termSubcategory is a controlled vocabulary that lists the expected sub-catogories for the defined terms.
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+
+				
+					<p class="section-desc"><b>Property Range of:</b>
+                        <br>
+                        <a href="#glossary:hasSubcategory">glossary:hasSubcategory</a>  
+                    </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>glossary:TermSubcategory a owl:Class ;<br />    rdfs:label &quot;Term&quot; ;<br />    rdfs:comment &quot;glossary:termSubcategory is a controlled vocabulary that lists the expected sub-catogories for the defined terms.&quot; ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+			<div class="entity-div">
+
+
+
+				<h3 class="entity-section">Class: <a name="ml:Model" href="#ml:Model">ml:Model</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+
+                <div class="tree-container">
+                <div class="tree">
+                    <ul>
+                        
+
+                            <li href="#"><a>owl:Thing</a>
+
+                            <ul>
+                              <li><a style="font-weight: bold;">ml:Model</a>
+
+                              
+                                </li>
+
+                            </ul>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+                </div>
+
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> ml:Model is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    ml:model represents a machine learning model instance. It is used to captures the metadata around an ML model.
+                </p>
+
+                
+                    <p class="section-desc"><b>Inherits from:</b> <br />owl:Thing</p>
+				
+
+
+
+				
+					<p class="section-desc"><b>Property Domain of:</b>
+                        <br>
+                        <a href="#dct:hasVersion">dct:hasVersion</a> | <a href="#ml:hasInputFeature">ml:hasInputFeature</a> | <a href="#ml:hasModelFeature">ml:hasModelFeature</a> | <a href="#ml:hasNonModelFeature">ml:hasNonModelFeature</a>  
+                    </p>
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>ml:Model a owl:Class ;<br />    rdfs:label &quot;Model&quot; ;<br />    rdfs:comment &quot;ml:model represents a machine learning model instance. It is used to captures the metadata around an ML model.&quot; ;<br />    rdfs:subClassOf owl:Thing .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+
+			
+
+	
+
+
+
+	
+
+	
+
+		<hr class="margintop">
+		<h1 class="margintop"><a name="objproperties">&nbsp;</a>Object Properties</h1>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasDefinition" href="#fcat:hasDefinition">fcat:hasDefinition</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasDefinition is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasFeature is an object property that connects fcat:Feature and its description which is part of glossary as glossary:Term.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#glossary:Term">glossary:Term</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasDefinition a owl:ObjectProperty ;<br />    rdfs:label &quot;hasDefinition&quot;@en ;<br />    rdfs:comment &quot;fcat:hasFeature is an object property that connects fcat:Feature and its description which is part of glossary as glossary:Term.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range glossary:Term ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasExpression" href="#fcat:hasExpression">fcat:hasExpression</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasExpression is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasExpression is an object property that connects fcat:Feature to the fcat:Expression.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Expression">fcat:Expression</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasExpression a owl:ObjectProperty ;<br />    rdfs:label &quot;hasExpression&quot;@en ;<br />    rdfs:comment &quot;fcat:hasExpression is an object property that connects fcat:Feature to the fcat:Expression.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range fcat:Expression ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasFeature" href="#fcat:hasFeature">fcat:hasFeature</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasFeature is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasFeature is an object property that connects fcat:Catalog its member features (fact:Feature).
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Catalog">fcat:Catalog</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasFeature a owl:ObjectProperty ;<br />    rdfs:label &quot;hasSource&quot;@en ;<br />    rdfs:comment &quot;fcat:hasFeature is an object property that connects fcat:Catalog its member features (fact:Feature).&quot;@en ;<br />    rdfs:domain fcat:Catalog ;<br />    rdfs:range fcat:Feature ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasPreviousVersion" href="#fcat:hasPreviousVersion">fcat:hasPreviousVersion</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasPreviousVersion is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasPreviousVersion is an object property that connects fcat:Feature with its previous version.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasPreviousVersion a owl:ObjectProperty ;<br />    rdfs:label &quot;hasPreviousVersion&quot;@en ;<br />    rdfs:comment &quot;fcat:hasPreviousVersion is an object property that connects fcat:Feature with its previous version.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range fcat:Feature ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasQuerytype" href="#fcat:hasQuerytype">fcat:hasQuerytype</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasQuerytype is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasQuerytype is an object property that connects query expression with the type of query for which the query text has been provided.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:QueryExpression">fcat:QueryExpression</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:QueryType">fcat:QueryType</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasQuerytype a owl:ObjectProperty ;<br />    rdfs:label &quot;hasQuerytype&quot;@en ;<br />    rdfs:comment &quot;fcat:hasQuerytype is an object property that connects query expression with the type of query for which the query text has been provided.&quot;@en ;<br />    rdfs:domain fcat:QueryExpression ;<br />    rdfs:range fcat:QueryType ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasRelationshipType" href="#fcat:hasRelationshipType">fcat:hasRelationshipType</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasRelationshipType is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasRelationshipType is an object property that connects fcat:Relationship instance to the type of a relationship, the source and target feature holds.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Relationship">fcat:Relationship</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:RelationshipType">fcat:RelationshipType</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasRelationshipType a owl:ObjectProperty ;<br />    rdfs:label &quot;hasRelationshipType&quot;@en ;<br />    rdfs:comment &quot;fcat:hasRelationshipType is an object property that connects fcat:Relationship instance to the type of a relationship, the source and target feature holds.&quot;@en ;<br />    rdfs:domain fcat:Relationship ;<br />    rdfs:range fcat:RelationshipType ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasSourceFeature" href="#fcat:hasSourceFeature">fcat:hasSourceFeature</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasSourceFeature is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasSourceFeature is an object property that connects a fcat:Relationship instance with its source Feature
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Relationship">fcat:Relationship</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasSourceFeature a owl:ObjectProperty ;<br />    rdfs:label &quot;hasSourceFeature&quot;@en ;<br />    rdfs:comment &quot;fcat:hasSourceFeature is an object property that connects a fcat:Relationship instance with its source Feature&quot;@en ;<br />    rdfs:domain fcat:Relationship ;<br />    rdfs:range fcat:Feature ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="fcat:hasTargetFeature" href="#fcat:hasTargetFeature">fcat:hasTargetFeature</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasTargetFeature is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasTargetFeature is an object property that connects a fcat:Relationship instance with its target Feature
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Relationship">fcat:Relationship</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasTargetFeature a owl:ObjectProperty ;<br />    rdfs:label &quot;hasTargetFeature&quot;@en ;<br />    rdfs:comment &quot;fcat:hasTargetFeature is an object property that connects a fcat:Relationship instance with its target Feature&quot;@en ;<br />    rdfs:domain fcat:Relationship ;<br />    rdfs:range fcat:Feature ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="glossary:hasCategory" href="#glossary:hasCategory">glossary:hasCategory</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> glossary:hasCategory is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    The object property that connects a defined term with its category.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#glossary:Term">glossary:Term</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#glossary:TermCategory">glossary:TermCategory</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>glossary:hasCategory a owl:ObjectProperty ;<br />    rdfs:label &quot;hasCategory&quot; ;<br />    rdfs:comment &quot;The object property that connects a defined term with its category.&quot; ;<br />    rdfs:domain glossary:Term ;<br />    rdfs:range glossary:TermCategory .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="glossary:hasSubcategory" href="#glossary:hasSubcategory">glossary:hasSubcategory</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> glossary:hasSubcategory is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    The object property that connects a defined term with its subcategory.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#glossary:Term">glossary:Term</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#glossary:TermSubcategory">glossary:TermSubcategory</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>glossary:hasSubcategory a owl:ObjectProperty ;<br />    rdfs:label &quot;hasSubcategory&quot; ;<br />    rdfs:comment &quot;The object property that connects a defined term with its subcategory.&quot; ;<br />    rdfs:domain glossary:Term ;<br />    rdfs:range glossary:TermSubcategory .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="ml:hasInputFeature" href="#ml:hasInputFeature">ml:hasInputFeature</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    ml:hasFeature is superclass of the different types of features used in an ML model.
+                </p>
+
+                
+
+				
+
+
+
+				
+					<p class="section-desc"><b>Has sub-property <small>(direct)</small>:</b>
+                        <br />
+                        <a href="#ml:hasModelFeature">ml:hasModelFeature</a> | <a href="#ml:hasNonModelFeature">ml:hasNonModelFeature</a>  
+                    </p>
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#ml:Model">ml:Model</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>ml:hasInputFeature a owl:ObjectProperty ;<br />    rdfs:label &quot;hasInputFeature&quot; ;<br />    rdfs:comment &quot;ml:hasFeature is superclass of the different types of features used in an ML model.&quot; ;<br />    rdfs:domain ml:Model ;<br />    rdfs:range fcat:Feature ;<br />    rdfs:subPropertyOf owl:topObjectProperty .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="ml:hasModelFeature" href="#ml:hasModelFeature">ml:hasModelFeature</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> ml:hasModelFeature is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    ml:hasModelFeature is an object property that connects a machine learning model instance with a feature that is used as a model feature in the ML model.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#ml:hasInputFeature">ml:hasInputFeature</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#ml:Model">ml:Model</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>ml:hasModelFeature a owl:ObjectProperty ;<br />    rdfs:label &quot;hasModelFeature&quot; ;<br />    rdfs:comment &quot;ml:hasModelFeature is an object property that connects a machine learning model instance with a feature that is used as a model feature in the ML model.&quot; ;<br />    rdfs:domain ml:Model ;<br />    rdfs:range fcat:Feature ;<br />    rdfs:subPropertyOf ml:hasInputFeature .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Object Property: <a name="ml:hasNonModelFeature" href="#ml:hasNonModelFeature">ml:hasNonModelFeature</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> ml:hasNonModelFeature is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    ml:hasNonModelFeature is an object property that connects a machine learning model instance with a feature that is used only as an imputation feature in the ML model.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#ml:hasInputFeature">ml:hasInputFeature</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#ml:Model">ml:Model</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>ml:hasNonModelFeature a owl:ObjectProperty ;<br />    rdfs:label &quot;hasNonModelFeature&quot; ;<br />    rdfs:comment &quot;ml:hasNonModelFeature is an object property that connects a machine learning model instance with a feature that is used only as an imputation feature in the ML model.&quot; ;<br />    rdfs:domain ml:Model ;<br />    rdfs:range fcat:Feature ;<br />    rdfs:subPropertyOf ml:hasInputFeature .</p>
+
+<p></p></code>
+				</div>
+
+			</div>
+
+			
+
+	
+
+
+
+
+
+
+
+	
+
+	
+
+		<hr class="margintop">
+		<h1 class="margintop"><a name="dataproperties">&nbsp;</a>Datatype Properties</h1>
+
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:hasCount" href="#fcat:hasCount">fcat:hasCount</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasCount is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    In statistics, count data is a statistical data type, a type of data in which the observations can take only the non-negative integer values {0, 1, 2, 3, ...}, and where these integers arise from counting rather than ranking.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#fcat:statisticalData">fcat:statisticalData</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:integer">xsd:integer</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasCount a owl:DatatypeProperty ;<br />    rdfs:label &quot;hasCount&quot;@en ;<br />    rdfs:comment &quot;In statistics, count data is a statistical data type, a type of data in which the observations can take only the non-negative integer values {0, 1, 2, 3, ...}, and where these integers arise from counting rather than ranking.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range xsd:integer ;<br />    rdfs:subPropertyOf fcat:statisticalData .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:hasDatatype" href="#fcat:hasDatatype">fcat:hasDatatype</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasDatatype is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasDatatype is a data property that captures the expected datatype of the feature.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#rdfs:Datatype">rdfs:Datatype</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasDatatype a owl:DatatypeProperty ;<br />    rdfs:label &quot;hasDatatype&quot;@en ;<br />    rdfs:comment &quot;fcat:hasDatatype is a data property that captures the expected datatype of the feature.&quot; ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range rdfs:Datatype ;<br />    rdfs:subPropertyOf owl:topDataProperty .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:hasMax" href="#fcat:hasMax">fcat:hasMax</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasMax is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    In statistics, the max is simply the highest observation in the set of data.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#fcat:statisticalData">fcat:statisticalData</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:decimal">xsd:decimal</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasMax a owl:DatatypeProperty ;<br />    rdfs:label &quot;hasMin&quot;@en ;<br />    rdfs:comment &quot;In statistics, the max is simply the highest observation in the set of data.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range xsd:decimal ;<br />    rdfs:subPropertyOf fcat:statisticalData .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:hasMean" href="#fcat:hasMean">fcat:hasMean</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasMean is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    The mean (average) of a data set is found by adding all numbers in the data set and then dividing by the number of values in the set.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#fcat:statisticalData">fcat:statisticalData</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:decimal">xsd:decimal</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasMean a owl:DatatypeProperty ;<br />    rdfs:label &quot;hasMean&quot;@en ;<br />    rdfs:comment &quot;The mean (average) of a data set is found by adding all numbers in the data set and then dividing by the number of values in the set.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range xsd:decimal ;<br />    rdfs:subPropertyOf fcat:statisticalData .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:hasMin" href="#fcat:hasMin">fcat:hasMin</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasMin is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    In statistics, the min is simply the lowest observation in the set of data.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#fcat:statisticalData">fcat:statisticalData</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:decimal">xsd:decimal</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasMin a owl:DatatypeProperty ;<br />    rdfs:label &quot;hasMin&quot;@en ;<br />    rdfs:comment &quot;In statistics, the min is simply the lowest observation in the set of data.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range xsd:decimal ;<br />    rdfs:subPropertyOf fcat:statisticalData .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:hasRelationshipScore" href="#fcat:hasRelationshipScore">fcat:hasRelationshipScore</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasRelationshipScore is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:hasRelationshipScore is a data property that score of the relationship between two features. For e.g. if two feature are corelated then their corelation score would be the value of this property.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Relationship">fcat:Relationship</a>  </p>
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasRelationshipScore a owl:DatatypeProperty ;<br />    rdfs:label &quot;hasRelationshipScore&quot;@en ;<br />    rdfs:comment &quot;fcat:hasRelationshipScore is a data property that score of the relationship between two features. For e.g. if two feature are corelated then their corelation score would be the value of this property.&quot;@en ;<br />    rdfs:domain fcat:Relationship ;<br />    rdfs:subPropertyOf owl:topDataProperty .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:hasStandardDeviation" href="#fcat:hasStandardDeviation">fcat:hasStandardDeviation</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:hasStandardDeviation is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    In statistics, the standard deviation is a measure of the amount of variation or dispersion of a set of values.
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#fcat:statisticalData">fcat:statisticalData</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:decimal">xsd:decimal</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:hasStandardDeviation a owl:DatatypeProperty ;<br />    rdfs:label &quot;hasStandardDeviation&quot;@en ;<br />    rdfs:comment &quot;In statistics, the standard deviation is a measure of the amount of variation or dispersion of a set of values.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range xsd:decimal ;<br />    rdfs:subPropertyOf fcat:statisticalData .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:percentileData" href="#fcat:percentileData">fcat:percentileData</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:percentileData is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    In statistics, a percentile is a measure used in statistics indicating the value below which a given percentage of observations in a group of observations falls. It is a super property of different percentile property
+                </p>
+
+                
+					<p class="section-desc"><b>Inherits from <small>(1)</small>:</b>
+                        <br />
+                        <a href="#fcat:statisticalData">fcat:statisticalData</a>  
+                    </p>
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:percentileData a owl:DatatypeProperty ;<br />    rdfs:label &quot;percentileData&quot;@en ;<br />    rdfs:comment &quot;In statistics, a percentile is a measure used in statistics indicating the value below which a given percentage of observations in a group of observations falls. It is a super property of different percentile property&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:subPropertyOf fcat:statisticalData .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:queryText" href="#fcat:queryText">fcat:queryText</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:queryText is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:queryText is a data property that captures the query, which retrieves the data for the corresponding feature.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:QueryExpression">fcat:QueryExpression</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:string">xsd:string</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:queryText a owl:DatatypeProperty ;<br />    rdfs:label &quot;queryText&quot;@en ;<br />    rdfs:comment &quot;fcat:queryText is a data property that captures the query, which retrieves the data for the corresponding feature.&quot;@en ;<br />    rdfs:domain fcat:QueryExpression ;<br />    rdfs:range xsd:string ;<br />    rdfs:subPropertyOf owl:topDataProperty .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:statisticalData" href="#fcat:statisticalData">fcat:statisticalData</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:statisticalData is a data property and the super property of all the properies that are used to capture some statistical data like percentile, mean and std of the numerical values. It can also have sub properties to capture categorical statistical data.
+                </p>
+
+                
+
+				
+
+
+
+				
+					<p class="section-desc"><b>Has sub-property <small>(direct)</small>:</b>
+                        <br />
+                        <a href="#fcat:hasCount">fcat:hasCount</a> | <a href="#fcat:hasMax">fcat:hasMax</a> | <a href="#fcat:hasMean">fcat:hasMean</a> | <a href="#fcat:hasMin">fcat:hasMin</a> | <a href="#fcat:hasStandardDeviation">fcat:hasStandardDeviation</a> | <a href="#fcat:percentileData">fcat:percentileData</a>  
+                    </p>
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:statisticalData a owl:DatatypeProperty ;<br />    rdfs:label &quot;validTo&quot;@en ;<br />    rdfs:comment &quot;fcat:statisticalData is a data property and the super property of all the properies that are used to capture some statistical data like percentile, mean and std of the numerical values. It can also have sub properties to capture categorical statistical data.&quot;@en ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:subPropertyOf owl:topDataProperty .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:validFrom" href="#fcat:validFrom">fcat:validFrom</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:validFrom is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:validFrom is a data property that captures the starting date of the validity of a feature.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:date">xsd:date</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:validFrom a owl:DatatypeProperty ;<br />    rdfs:label &quot;validFrom&quot;@en ;<br />    rdfs:comment &quot;fcat:validFrom is a data property that captures the starting date of the validity of a feature.&quot; ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range xsd:date ;<br />    rdfs:subPropertyOf owl:topDataProperty .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="fcat:validTo" href="#fcat:validTo">fcat:validTo</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> fcat:validTo is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    fcat:validTo is a data property that captures the ending date of the validity of a feature.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#fcat:Feature">fcat:Feature</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:date">xsd:date</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>fcat:validTo a owl:DatatypeProperty ;<br />    rdfs:label &quot;validTo&quot;@en ;<br />    rdfs:comment &quot;fcat:validTo is a data property that captures the ending date of the validity of a feature.&quot; ;<br />    rdfs:domain fcat:Feature ;<br />    rdfs:range xsd:date ;<br />    rdfs:subPropertyOf owl:topDataProperty .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+			<div class="entity-div">
+
+				<h3 class="entity-section">Datatype Property: <a name="glossary:rationale" href="#glossary:rationale">glossary:rationale</a>
+					<small>&nbsp;&nbsp;<a href="#a-z" class="backlink">back to top</a></small>
+				</h3>
+				<hr>
+
+                
+                <p class="section-desc">
+                    <small>NOTE</small> glossary:rationale is a leaf node.</p>
+                
+
+				<p class="section-desc"><b>Description</b>
+                    <br>
+                    glossary:rationale is a data property that captures the reason of the existence of the defined term.
+                </p>
+
+                
+
+				
+
+
+
+				
+
+				
+
+				
+					<p class="section-desc"><b>Class Domain for:</b>
+                        <br>
+                        <a href="#glossary:Term">glossary:Term</a>  </p>
+				
+
+				
+					<p class="section-desc"><b>Class Range for:</b>
+                        <br>
+                        <a href="#xsd:string">xsd:string</a>  </p>
+				
+
+
+                <small class="implementation_title">Implementation:</small>
+				<div class="implementation">
+					<code><p>@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .<br />@prefix dcat: &lt;http://www.w3.org/ns/dcat#&gt; .<br />@prefix dct: &lt;http://purl.org/dc/terms/&gt; .<br />@prefix fcat: &lt;http://geophy.io/ontologies/fcat#&gt; .<br />@prefix glossary: &lt;http://geophy.io/ontologies/glossary#&gt; .<br />@prefix ml: &lt;http://geophy.io/ontologies/ml#&gt; .<br />@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .<br />@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br />@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br />@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .<br />@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .<br />@prefix vann: &lt;http://purl.org/vocab/vann/&gt; .<br />@prefix void: &lt;http://rdfs.org/ns/void#&gt; .<br />@prefix xml: &lt;http://www.w3.org/XML/1998/namespace&gt; .<br />@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .</p>
+
+<p>glossary:rationale a owl:DatatypeProperty ;<br />    rdfs:label &quot;rationale&quot; ;<br />    rdfs:comment &quot;glossary:rationale is a data property that captures the reason of the existence of the defined term.&quot; ;<br />    rdfs:domain glossary:Term ;<br />    rdfs:range xsd:string .</p>
+
+<p></p></code>
+				</div>
+
+
+			</div>
+			
+
+	
+
+
+
+
+
+
+
+	
+
+	
+
+
+
+
+	
+
+
+	
+
+
+
+
+
+
+	<hr>
+	<small>Ontology documentation automatically generated by <a class="greylink"  href="http://lambdamusic.github.io/Ontospy/">Ontospy</a> on 10th March 2020 21:22</small>
+
+
+</body>
+</html>

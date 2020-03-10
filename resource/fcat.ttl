@@ -1,0 +1,230 @@
+# baseURI: http://geophy.io/ontologies/fcat
+# imports: http://geophy.io/ontologies/glossary
+# imports: https://www.w3.org/ns/dcat2014.rdf
+# prefix: fcat
+
+@prefix fcat: <http://geophy.io/ontologies/fcat#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://geophy.io/ontologies/fcat>
+  a owl:Ontology ;
+  owl:imports <http://geophy.io/ontologies/glossary> ;
+  owl:imports <https://www.w3.org/ns/dcat2014.rdf> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+fcat:Catalog
+  a owl:Class ;
+  rdfs:comment "dcat:Catalog is a collection of metadata about features used in the machine learning models."@en ;
+  rdfs:label "Catalog"@en ;
+  rdfs:subClassOf <http://www.w3.org/ns/dcat#Catalog> ;
+.
+fcat:Expression
+  a owl:Class ;
+  rdfs:comment "fcat:Expression is n extendable class that can have different types of expression to retrieve and calculation the feature data on the fly." ;
+  rdfs:label "Expression" ;
+  rdfs:subClassOf owl:Thing ;
+.
+fcat:Feature
+  a owl:Class ;
+  rdfs:comment "dcat:Feature represents a feature used in a machine learning models. The class is used to capture the metadata about the features." ;
+  rdfs:label "Feature" ;
+  rdfs:subClassOf owl:Thing ;
+.
+fcat:QueryExpression
+  a owl:Class ;
+  rdfs:comment "fcat:QueryExpression is used to capture the expression in query format." ;
+  rdfs:label "QueryExpression" ;
+  rdfs:subClassOf fcat:Expression ;
+.
+fcat:QueryType
+  a owl:Class ;
+  rdfs:comment "dcat:QueryType is a controlled vocabulary for types of query supported by feature serving API(s)."@en ;
+  rdfs:label "QueryType"@en ;
+  rdfs:subClassOf owl:Thing ;
+.
+fcat:Relationship
+  a owl:Class ;
+  rdfs:comment "fcat:relationship is class that captures the information of features that are related to each other, the type of relationship and score of the relationship (if applicable)."@en ;
+  rdfs:label "Relationship"@en ;
+  rdfs:subClassOf owl:Thing ;
+.
+fcat:RelationshipType
+  a owl:Class ;
+  rdfs:comment "fcat:RelationshipType is class that is a controlled vocabulary of relationship that two features can have."@en ;
+  rdfs:label "RelationshipType"@en ;
+  rdfs:subClassOf owl:Thing ;
+.
+fcat:correlation
+  a fcat:RelationshipType ;
+  rdfs:comment "fcat:correlation is an instance of fcat:RelationshipType" ;
+  rdfs:label "correlation" ;
+.
+fcat:hasCount
+  a owl:DatatypeProperty ;
+  rdfs:comment "In statistics, count data is a statistical data type, a type of data in which the observations can take only the non-negative integer values {0, 1, 2, 3, ...}, and where these integers arise from counting rather than ranking."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasCount"@en ;
+  rdfs:range xsd:integer ;
+  rdfs:subPropertyOf fcat:statisticalData ;
+.
+fcat:hasDatatype
+  a owl:DatatypeProperty ;
+  rdfs:comment "fcat:hasDatatype is a data property that captures the expected datatype of the feature." ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasDatatype"@en ;
+  rdfs:range rdfs:Datatype ;
+  rdfs:subPropertyOf owl:topDataProperty ;
+.
+fcat:hasDefinition
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasFeature is an object property that connects fcat:Feature and its description which is part of glossary as glossary:Term."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasDefinition"@en ;
+  rdfs:range <http://geophy.io/ontologies/glossary#Term> ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:hasExpression
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasExpression is an object property that connects fcat:Feature to the fcat:Expression."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasExpression"@en ;
+  rdfs:range fcat:Expression ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:hasFeature
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasFeature is an object property that connects fcat:Catalog its member features (fact:Feature)."@en ;
+  rdfs:domain fcat:Catalog ;
+  rdfs:label "hasSource"@en ;
+  rdfs:range fcat:Feature ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:hasMax
+  a owl:DatatypeProperty ;
+  rdfs:comment "In statistics, the max is simply the highest observation in the set of data."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasMin"@en ;
+  rdfs:range xsd:decimal ;
+  rdfs:subPropertyOf fcat:statisticalData ;
+.
+fcat:hasMean
+  a owl:DatatypeProperty ;
+  rdfs:comment "The mean (average) of a data set is found by adding all numbers in the data set and then dividing by the number of values in the set."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasMean"@en ;
+  rdfs:range xsd:decimal ;
+  rdfs:subPropertyOf fcat:statisticalData ;
+.
+fcat:hasMin
+  a owl:DatatypeProperty ;
+  rdfs:comment "In statistics, the min is simply the lowest observation in the set of data."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasMin"@en ;
+  rdfs:range xsd:decimal ;
+  rdfs:subPropertyOf fcat:statisticalData ;
+.
+fcat:hasPreviousVersion
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasPreviousVersion is an object property that connects fcat:Feature with its previous version."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasPreviousVersion"@en ;
+  rdfs:range fcat:Feature ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:hasQuerytype
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasQuerytype is an object property that connects query expression with the type of query for which the query text has been provided."@en ;
+  rdfs:domain fcat:QueryExpression ;
+  rdfs:label "hasQuerytype"@en ;
+  rdfs:range fcat:QueryType ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:hasRelationshipScore
+  a owl:DatatypeProperty ;
+  rdfs:comment "fcat:hasRelationshipScore is a data property that score of the relationship between two features. For e.g. if two feature are corelated then their corelation score would be the value of this property."@en ;
+  rdfs:domain fcat:Relationship ;
+  rdfs:label "hasRelationshipScore"@en ;
+  rdfs:subPropertyOf owl:topDataProperty ;
+.
+fcat:hasRelationshipType
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasRelationshipType is an object property that connects fcat:Relationship instance to the type of a relationship, the source and target feature holds."@en ;
+  rdfs:domain fcat:Relationship ;
+  rdfs:label "hasRelationshipType"@en ;
+  rdfs:range fcat:RelationshipType ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:hasSourceFeature
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasSourceFeature is an object property that connects a fcat:Relationship instance with its source Feature"@en ;
+  rdfs:domain fcat:Relationship ;
+  rdfs:label "hasSourceFeature"@en ;
+  rdfs:range fcat:Feature ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:hasStandardDeviation
+  a owl:DatatypeProperty ;
+  rdfs:comment "In statistics, the standard deviation is a measure of the amount of variation or dispersion of a set of values."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "hasStandardDeviation"@en ;
+  rdfs:range xsd:decimal ;
+  rdfs:subPropertyOf fcat:statisticalData ;
+.
+fcat:hasTargetFeature
+  a owl:ObjectProperty ;
+  rdfs:comment "fcat:hasTargetFeature is an object property that connects a fcat:Relationship instance with its target Feature"@en ;
+  rdfs:domain fcat:Relationship ;
+  rdfs:label "hasTargetFeature"@en ;
+  rdfs:range fcat:Feature ;
+  rdfs:subPropertyOf owl:topObjectProperty ;
+.
+fcat:percentileData
+  a owl:DatatypeProperty ;
+  rdfs:comment "In statistics, a percentile is a measure used in statistics indicating the value below which a given percentage of observations in a group of observations falls. It is a super property of different percentile property"@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "percentileData"@en ;
+  rdfs:subPropertyOf fcat:statisticalData ;
+.
+fcat:queryText
+  a owl:DatatypeProperty ;
+  rdfs:comment "fcat:queryText is a data property that captures the query, which retrieves the data for the corresponding feature."@en ;
+  rdfs:domain fcat:QueryExpression ;
+  rdfs:label "queryText"@en ;
+  rdfs:range xsd:string ;
+  rdfs:subPropertyOf owl:topDataProperty ;
+.
+fcat:statisticalData
+  a owl:DatatypeProperty ;
+  rdfs:comment "fcat:statisticalData is a data property and the super property of all the properies that are used to capture some statistical data like percentile, mean and std of the numerical values. It can also have sub properties to capture categorical statistical data."@en ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "validTo"@en ;
+  rdfs:subPropertyOf owl:topDataProperty ;
+.
+fcat:validFrom
+  a owl:DatatypeProperty ;
+  rdfs:comment "fcat:validFrom is a data property that captures the starting date of the validity of a feature." ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "validFrom"@en ;
+  rdfs:range xsd:date ;
+  rdfs:subPropertyOf owl:topDataProperty ;
+.
+fcat:validTo
+  a owl:DatatypeProperty ;
+  rdfs:comment "fcat:validTo is a data property that captures the ending date of the validity of a feature." ;
+  rdfs:domain fcat:Feature ;
+  rdfs:label "validTo"@en ;
+  rdfs:range xsd:date ;
+  rdfs:subPropertyOf owl:topDataProperty ;
+.
+<http://purl.org/dc/terms/creator>
+  rdfs:domain fcat:Feature ;
+.
+<http://purl.org/dc/terms/hasVersion>
+  rdfs:domain fcat:Feature ;
+.
+<http://purl.org/dc/terms/source>
+  rdfs:domain fcat:Feature ;
+.

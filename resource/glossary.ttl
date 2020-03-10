@@ -1,0 +1,57 @@
+# baseURI: http://geophy.io/ontologies/glossary
+# imports: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl
+# prefix: glossary
+
+@prefix glossary: <http://geophy.io/ontologies/glossary#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://geophy.io/ontologies/glossary>
+  a owl:Ontology ;
+  owl:imports <https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+glossary:Term
+  a owl:Class ;
+  rdfs:comment "glossary:Term is used to capture the formal definition and explanation related to a term. These terms are often classfiied using a specific category and subcategory." ;
+  rdfs:label "Term" ;
+  rdfs:subClassOf owl:Thing ;
+.
+glossary:TermCategory
+  a owl:Class ;
+  rdfs:comment "glossary:termCategory is a controlled vocabulary that lists the expected catogories for the defined terms." ;
+  rdfs:label "Term" ;
+  rdfs:subClassOf owl:Thing ;
+.
+glossary:TermSubcategory
+  a owl:Class ;
+  rdfs:comment "glossary:termSubcategory is a controlled vocabulary that lists the expected sub-catogories for the defined terms." ;
+  rdfs:label "Term" ;
+  rdfs:subClassOf owl:Thing ;
+.
+glossary:hasCategory
+  a owl:ObjectProperty ;
+  rdfs:comment "The object property that connects a defined term with its category." ;
+  rdfs:domain glossary:Term ;
+  rdfs:label "hasCategory" ;
+  rdfs:range glossary:TermCategory ;
+.
+glossary:hasSubcategory
+  a owl:ObjectProperty ;
+  rdfs:comment "The object property that connects a defined term with its subcategory." ;
+  rdfs:domain glossary:Term ;
+  rdfs:label "hasSubcategory" ;
+  rdfs:range glossary:TermSubcategory ;
+.
+glossary:rationale
+  a owl:DatatypeProperty ;
+  rdfs:comment "glossary:rationale is a data property that captures the reason of the existence of the defined term." ;
+  rdfs:domain glossary:Term ;
+  rdfs:label "rationale" ;
+  rdfs:range xsd:string ;
+.
+<http://purl.org/dc/terms/description>
+  rdfs:domain glossary:Term ;
+.
